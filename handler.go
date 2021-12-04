@@ -224,7 +224,6 @@ func docxImp(w http.ResponseWriter, r *http.Request) {
 	e := env.NewEnv()
 	core.Import(e)
 	_ = e.DefineType("Row", Row{})
-	_ = e.Define("AutoID", r.FormValue("AutoID"))
 	_ = e.Define("Tab", table)
 	_ = e.Define("DB", db)
 	_ = e.Define("JsonEncode", EncodeString)

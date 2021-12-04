@@ -10,7 +10,7 @@
           v-model="sql"
           :rows="16"
           type="textarea"
-          placeholder="输入sql...（多条sql之间以';'相割）"
+          placeholder="输入sql...（多条sql之间以';'分隔）"
         />
         <el-upload
           class="load-sql"

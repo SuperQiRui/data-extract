@@ -8,7 +8,7 @@
       <el-form-item>
         <el-select
           v-model="table"
-          placeholder="选择目标物理表"
+          placeholder="查看物理表信息"
           filterable
         >
           <el-option
@@ -25,15 +25,6 @@
           title="字段信息"
           :description="tabs[table].Col.map(c=>c.Comment?`${c.Name}(${c.Comment})`:c.Name).join(', ')"
           type="info"
-        />
-      </el-form-item>
-
-      <el-form-item>
-        <el-switch
-          v-model="autoID"
-          active-value="Y"
-          inactive-value="N"
-          active-text="自动生成ID"
         />
       </el-form-item>
       <el-form-item>
@@ -121,14 +112,9 @@ export default defineComponent({
     const upload = ref(null)
     const table = ref({})
     const ankScript = ref('')
-    const autoID = ref('Y')
     const fileList = ref([])
 
     const uploadAction = () => {
-      if (!table.value) {
-        ElMessage.warning(`请先指定表名`)
-        return
-      }
       if (fileList.value.length === 0) {
         ElMessage.warning('请先上传Excel')
         return
@@ -139,8 +125,6 @@ export default defineComponent({
       }
 
       const formData = new FormData()
-      formData.append('Table', table.value)
-      formData.append('AutoID', autoID.value)
       formData.append('AnkoScript', ankScript.value)
       fileList.value.forEach((file) => {
         formData.append('DOCX', file.raw)
@@ -174,7 +158,6 @@ export default defineComponent({
     return {
       upload,
       table,
-      autoID,
       ankScript,
       fileList,
       uploadAction,

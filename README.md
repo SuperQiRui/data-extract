@@ -3,8 +3,5 @@
 ## build
 
 ```sh
-cd ui
-yarn build
-mv web/index.html web/index.htm
-go build
+cd ui && yarn build && cd .. && mv web/index.html web/index.htm && go build
 ```
