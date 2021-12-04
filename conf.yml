@@ -1,0 +1,4 @@
+ConnectionStr: root:root@tcp(127.0.0.1:3306)/technician?charset=utf8mb4
+Type: mysql
+DB: technician
+PoolSize: 15

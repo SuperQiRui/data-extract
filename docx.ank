@@ -1,0 +1,107 @@
+
+strings = import("strings")
+strconv = import("strconv")
+regexp = import("regexp")
+
+stemRe = regexp.MustCompile(`^(\d{1,3})．`)
+typeRe = {
+  "单选题": {
+		"开始": regexp.MustCompile(`^单项选择题`),
+		"选项": regexp.MustCompile(` *[A-E]、(\S+)\s*`),
+		"答案": regexp.MustCompile(`\( *([A-E]{1,5}) *\)`),
+		"解析": regexp.MustCompile(`\( *([A-E]{1,5}) *\)`)
+	},
+  "多选题": {
+		"开始": regexp.MustCompile(`^多项选择题`),
+		"选项": regexp.MustCompile(` *[A-E]、(\S+)\s*`),
+		"答案": regexp.MustCompile(`\( *([A-E]{1,5}) *\)`),
+		"解析": regexp.MustCompile(`\( *([A-E]{1,5}) *\)`)
+	},
+  "判断题": {
+		"开始": regexp.MustCompile(`^判断题`),
+		"选项": regexp.MustCompile(`\( *(×|√) *\)`),
+		"答案": regexp.MustCompile(`\( *([A-E]{1,5}) *\)`),
+		"解析": regexp.MustCompile(`\( *([A-E]{1,5}) *\)`)
+	},
+  "论述题": {
+		"开始": regexp.MustCompile(`^论述题`),
+		"选项": regexp.MustCompile(`\( *([A-E]{1,5}) *\)`),
+		"答案": regexp.MustCompile(`\( *([A-E]{1,5}) *\)`),
+		"解析": regexp.MustCompile(`\( *([A-E]{1,5}) *\)`)
+	},
+}
+println(typeRe)
+func getRow(curType, curStem) {
+	println(1, curType, curStem)
+	if curStem != "" && curType != "" {
+		row = make(Row)
+		row = {
+			"试卷": Doc,
+			"题型": curType
+		}
+		println(curType)
+		// row["序号"], _ = strconv.Atoi(stemPre.FindStringSubmatch(curStem)[1])
+		row["解析"], _ = typeRe[curType]["解析"].FindStringSubmatch(curStem)[1]
+		
+		option = []
+		for o in typeRe[curType]["选项"].FindAllStringSubmatch(text, -1) {
+			option += toString(o[1])
+		}
+		row["选项"] = JsonEncode(option)
+		row["选项数"] = len(option)
+		answer = []
+		for o in typeRe[curType]["答案"].FindAllStringSubmatch(text, -1) {
+			answer += toString(o[1])
+		}
+		row["答案"] = JsonEncode(answer)
+		row["题干"] = typeRe[curType]["答案"].ReplaceAllString(strings.SplitN(text, "\n", 2)[0], "(   )")
+
+		return row
+	}
+	return nil
+}
+
+rows = make([]Row)
+curType = ""
+curStem = ""
+content = ""
+for p in PS {
+  for r in p.Runs() {
+    content += strings.TrimSpace(r.Text())
+  }
+	for t in keys(typeRe) {
+		// t = toString(t)
+		if typeRe[t]["开始"].MatchString(content) {
+			// 处理上一题型的最后一道题
+			row = getRow(curType, curStem)
+			if row != nil {
+				rows += row
+			}
+
+			curStem = ""
+			curType = t
+		}
+	}
+	
+	if stemRe.MatchString(content) {
+		// 处理上一道题
+		row = getRow(curType, curStem)
+		if row != nil {
+			rows += row
+		}
+		curStem = ""
+	} else {
+		curStem += content
+	}
+}
+
+// 处理试卷上最后一道题
+row = getRow(curType, curStem)
+if row != nil {
+	rows += row
+}
+println(rows)
+// for row in rows {
+// 	_ = DB.MustExec("INSERT INTO qust(试卷,序号,答案,解析,选项,选项数,题型,题干)VALUES(?,?,?,?,?,?,?,?)",
+// 	row["试卷"],row["序号"],row["答案"],row["解析"],row["选项"],row["题型"],row["题干"])
+// }

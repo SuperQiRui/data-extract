@@ -1,0 +1,31 @@
+{
+  "name": "data-extract-vue",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons": "^0.0.11",
+    "axios": "^0.22.0",
+    "element-plus": "1.2.0-beta.5",
+    "qs": "^6.10.1",
+    "vue": "^3.2.23",
+    "vue-router": "^4.0.12"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.10.0",
+    "@vue/compiler-sfc": "^3.2.23",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.24.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "eslint-plugin-vue": "^7.16.0",
+    "sass": "^1.37.5",
+    "unplugin-vue-components": "^0.17.2",
+    "vite": "^2.6.14",
+    "vite-plugin-svg-icons": "^1.0.4"
+  }
+}
