@@ -43,7 +43,6 @@
       <el-form-item>
         <el-button
           type="primary"
-          style="margin-left: 20px"
           @click="downloadAction"
         >
           开始导出

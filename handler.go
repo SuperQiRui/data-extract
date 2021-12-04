@@ -121,8 +121,6 @@ func xlsxImp(w http.ResponseWriter, r *http.Request) {
 			query = fmt.Sprintf("INSERT INTO %s (%s)VALUES(%s)", table, strings.Join(col, ","), strings.TrimPrefix(strings.Repeat(","+sqlPlaceholder, len(col)), ","))
 		}
 
-		log.Println(query)
-
 		sem := NewPool(conf.PoolSize, &sync.WaitGroup{})
 		for i, row := range rows[1:] {
 			log.Printf("[Line %d] being processed\n", i+1)
