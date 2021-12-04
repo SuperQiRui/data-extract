@@ -118,7 +118,7 @@ func main() {
 
 	// 自动打开浏览器
 	var cmd *exec.Cmd
-	url := "http://localhost:7788/app/"
+	url := "http://localhost:7788/app"
 	switch runtime.GOOS {
 	case "windows":
 		cmd = exec.Command("cmd", "/c", "start", url)
