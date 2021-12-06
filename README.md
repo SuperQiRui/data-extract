@@ -11,3 +11,9 @@ This is a data extraction widget. You can use it to import excel, word, and also
 ```sh
 cd ui && yarn build && cd .. && mv web/index.html web/index.htm && go build
 ```
+
+## how to use
+
+1. First configure the database connection information in `conf.yml`
+2. At the command line, run: `. /de`
+3. Automatically open the default browser
